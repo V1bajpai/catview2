@@ -59,30 +59,15 @@ public class TestVaibhav {
 
 	}
 
-//		@Test
-//		public void testjsonpath() {
-//			RestAssured.baseURI = "https://api.thecatapi.com";
-//			RequestSpecification httpRequest = RestAssured.given();
-//			Response response = httpRequest.get("/v1/images/search");
-//			System.out.println("Response="+ response);
-//			JsonPath jsonPathEvaluator = response.jsonPath();
-//			List<Object> url= jsonPathEvaluator.getList("response");
-//			System.out.println("Jsonpath="+url);
-
-//			String endpoint = "https://api.thecatapi.com/v1/images/search";
-//			String json = given().when().get(endpoint).asString();
-//			System.out.println(json);
-//			String firstArrayItem = JsonPath.read(json, "$[0]").toString();
-	// fetch complete response
-//			String completeResponse = JsonPath.read(json, "$").toString();
-//			String authors = JsonPath.parse(json).read( "$");
-//			
-//			Object dataObject = JsonPath.parse(json).read("$[?(@.id == 2)]");
-//			String dataString = dataObject.toString();
-//
-//			System.out.println("-----completeResponse---");
-//			System.out.println(completeResponse);
-//		}
+		@Test
+		public void testjsonpath() {
+			String endpoint = "https://api.thecatapi.com/v1/images/search";
+			String json = given().when().get(endpoint).asString();
+			System.out.println(json);
+			String firstArrayItem = JsonPath.read(json, "$[0]").toString();
+			System.out.println(firstArrayItem);
+	
+	}
 	
 	
 //	@Test
