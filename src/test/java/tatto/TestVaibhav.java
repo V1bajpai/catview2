@@ -30,32 +30,32 @@ public class TestVaibhav {
 		String endpoint = "https://api.thecatapi.com/v1/images/search";
 		String json = given().when().get(endpoint).asString();
 
-		// Testcase-1 There should be only one node
+		// Testcase- There should be only one node
 		List<String> arrayItem = Collections.singletonList(JsonPath.read(json, "$").toString());
 		Assert.assertEquals(1, arrayItem.size());
 
-		// Testcase-2 Array's item should be present
+		// Testcase- Array's item should be present
 		String firstArrayItem = JsonPath.read(json, "$[0]").toString();
 		System.out.println(firstArrayItem);
 		Assert.assertNotEquals(0, firstArrayItem.length());
 
-		// Testcase-3 breeds array should be empty
+		// Testcase- breeds array should be empty
 		List<String> breeds = Collections.singletonList(JsonPath.read(json, "$[0].breeds").toString());
 		Assert.assertNotEquals(0, breeds.size());
 
-		// Testcase-4 id should not be empty
+		// Testcase- id should not be empty
 		String id = JsonPath.read(json, "$[0].id").toString();
 		Assert.assertNotEquals(0, id.length());
 
-		// Testcase-5 Url should not be empty
+		// Testcase- Url should not be empty
 		String url = JsonPath.read(json, "$[0].url").toString();
 		Assert.assertNotEquals(0, url.length());
 
-		// Testcase-6 width should be present
+		// Testcase- width should be present
 		int width = JsonPath.read(json, "$[0].width");
 		Assert.assertNotEquals(0, width);
 
-		// Testcase-7 height should be present
+		// Testcase- height should be present
 		int height = JsonPath.read(json, "$[0].height");
 		Assert.assertNotEquals(0, height);
 	}
@@ -66,17 +66,40 @@ public class TestVaibhav {
 		String caturl="https://api.thecatapi.com/v1/images";
 		String json = given().when().get(caturl).asString();
 
-		//Testcase-8 Url should be present
+		//Testcase- Url should be present
 		String url = JsonPath.read(json, "$[0].url").toString();
 		Assert.assertNotEquals(0, url.length());
 
-		//Testcase-9 created_at field should be present
+		//Testcase- created_at field should be present
 		String created_at = JsonPath.read(json, "$[0].created_at").toString();
 		Assert.assertNotEquals(0, created_at.length());
 
-		//Testcase-10 original_filename should be present
+		//Testcase- original_filename should be present
 		String original_filename = JsonPath.read(json, "$[0].original_filename").toString();
 		Assert.assertNotEquals(0, original_filename.length());
+	}
+
+	@Test
+	@DisplayName("Get request: For getting image by image_id")
+	public void imageById(){
+		String imgUrl= "https://api.thecatapi.com/v1/images/bcs";
+		String json = given().when().get(imgUrl).asString();
+
+		//Testcase- Id should be present
+		String id = JsonPath.read(json, "$.id").toString();
+		Assert.assertEquals("bcs", id);
+
+		// Testcase- Url should not be empty
+		String url = JsonPath.read(json, "$.url").toString();
+		Assert.assertNotEquals(0,url.length());
+
+		// Testcase- width should be present
+		int width = JsonPath.read(json, "$.width");
+		Assert.assertNotEquals(0,width);
+
+		// Testcase- height should be present
+		int height = JsonPath.read(json, "$.height");
+		Assert.assertNotEquals(0,height);
 	}
 
 	@Test
@@ -88,11 +111,66 @@ public class TestVaibhav {
 		request.header("Content-type", "application/json");
 		Response response = request.body(file).post("/v1/votes");
 		int statusCode = response.getStatusCode();
-		// Testcase-11
+		// Testcase- status code should be OK-200
 		Assert.assertEquals(200, statusCode);
 
 	}
 
+	@Test
+	@DisplayName("Get request: Analysis Report")
+	public void getAnalysisReport(){
+		String analysisUrl="https://api.thecatapi.com/v1/images/bcs/analysis";
+		String json = given().when().get(analysisUrl).asString();
+
+		//Testcase- Image id should be same
+		String imageid= JsonPath.read(json, "$[0].image_id");
+		Assert.assertEquals("bcs", imageid);
+
+		//Testcase- Vendor should be present
+		String vendor= JsonPath.read(json, "$[0].vendor");
+		Assert.assertEquals("AWS Rekognition", vendor);
+
+		//Testcase-
+		String behavior = JsonPath.read(json, "$[0].labels[0].Name").toString();
+		Assert.assertEquals("Pet", behavior);
+
+		//Testcase-
+		String species = JsonPath.read(json, "$[0].labels[1].Name").toString();
+		Assert.assertEquals("Mammal", species);
+
+		//Testcase-
+		String typeofcreature = JsonPath.read(json, "$[0].labels[2].Name").toString();
+		Assert.assertEquals("Animal", typeofcreature);
+
+		//Testcase-
+		String typeOfAnimal = JsonPath.read(json, "$[0].labels[3].Name").toString();
+		Assert.assertEquals("Cat", typeOfAnimal);
+
+		//Testcase-
+		String ageCategory = JsonPath.read(json, "$[0].labels[4].Name").toString();
+		Assert.assertEquals("Kitten", ageCategory);
+
+		//Testcase-
+		String cloth = JsonPath.read(json, "$[0].labels[5].Name").toString();
+		Assert.assertEquals("Blanket", cloth);
+
+		//Testcase-
+		String manxtype = JsonPath.read(json, "$[0].labels[6].Name").toString();
+		Assert.assertEquals("Manx", manxtype);
+
+		//Testcase-
+		String Furtype = JsonPath.read(json, "$[0].labels[7].Name").toString();
+		Assert.assertEquals("Fur", Furtype);
+
+		//Testcase-
+		String ferretname = JsonPath.read(json, "$[0].labels[8].Name").toString();
+		Assert.assertEquals("Ferret", ferretname);
+
+		//Testcase-
+		String status = JsonPath.read(json, "$[0].labels[9].Name").toString();
+		Assert.assertEquals("Sleeping", status);
+
+	}
 
 }
 
