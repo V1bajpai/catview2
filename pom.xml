@@ -6,6 +6,14 @@
 	<artifactId>testingfor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+	<repositories>
+		<repository>
+			<id>sonatype</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+			<snapshots />
+		</repository>
+	</repositories>
+
 	<properties>
 		<junit.version>5.8.0</junit.version>
 	</properties>

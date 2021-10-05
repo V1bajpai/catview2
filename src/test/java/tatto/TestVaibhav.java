@@ -1,74 +1,109 @@
 package tatto;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.File;
+import java.util.List;
+
 import static io.restassured.RestAssured.*;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
+//import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 
-import java.util.*;
-
 public class TestVaibhav {
-		@Test
-		public void verifyJSONArrayResponse() {
-		System.setProperty("webdriver.chrome.driver", "C:\\browserdriver\\chromedriver.exe");
-		WebDriver driver = new ChromeDriver();
-		
-		
-		//1. Get Request operations
-		JsonArray jsonArray = new JsonArray();
-		jsonArray = given().baseUri("https://api.thecatapi.com")
-				.basePath("/v1/images/search")
-				.get().as(JsonArray.class);
+	private static final String json = null;
 
-		//2. Read data and producing o/p on browser
+	@Test
+	public void verifyJSONArrayResponse() {
+
+		// 1. Get Request operations
+		JsonArray jsonArray = new JsonArray();
+		jsonArray = given().baseUri("https://api.thecatapi.com").basePath("/v1/images/search").get()
+				.as(JsonArray.class);
+
+		// 2. Read data and producing o/p on browser
 		for (int i = 0; i < jsonArray.size(); i++) {
 			JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-			String urlcat=jsonObject.get("url").getAsString();
+			String urlcat = jsonObject.get("url").getAsString();
 			System.out.println(urlcat);
-			driver.manage().window().maximize();
-			driver.get(urlcat);
 		}
-		System.out.println("Do you want to another search: ");
-		System.out.println("Press-1 for Continue");
-		System.out.println("Press-2 for Stop");
-		Scanner sc=new Scanner(System.in);
-		int n=sc.nextInt();
-		if(n==1) {
-			verifyJSONArrayResponse();
-		}		
-	}
-		
-		
-		// Post Request for voting
-		@Test
-		public void RegistrationSuccessful()
-		{		
-			RestAssured.baseURI ="https://api.thecatapi.com";
-			String payload = "{\r\n"
-					+ "  \"image_id\": \"asf2\",\r\n"
-					+ "  \"sub_id\": \"my-user-1234\",\r\n"
-					+ "  \"value\": 1\r\n"
-					+ "}";
-			RequestSpecification request = RestAssured.given();
-			request.header("Content-type", "application/json");
-			
-			Response response = request.body(payload).post("/v1/votes");
-			
-			int statusCode = response.getStatusCode();
-			System.out.println("Response status code is: "+ statusCode);
-			Assert.assertEquals(200, statusCode);
-		}
-		
 
+	}
+
+	// Post Request for voting
+	@Test
+	public void voteTocat() {
+		RestAssured.baseURI = "https://api.thecatapi.com";
+		File file = new File("C:\\Users\\Vaibhav\\eclipse-workspace\\testingfor\\src\\test\\resources\\schema.json");
+
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-type", "application/json");
+
+		Response response = request.body(file).post("/v1/votes");
+
+		int statusCode = response.getStatusCode();
+		ResponseBody msg= response.getBody();
+		System.out.println(msg);
+		// Testcase-1
+		Assert.assertEquals(200, statusCode);
+
+	}
+
+//		@Test
+//		public void testjsonpath() {
+//			RestAssured.baseURI = "https://api.thecatapi.com";
+//			RequestSpecification httpRequest = RestAssured.given();
+//			Response response = httpRequest.get("/v1/images/search");
+//			System.out.println("Response="+ response);
+//			JsonPath jsonPathEvaluator = response.jsonPath();
+//			List<Object> url= jsonPathEvaluator.getList("response");
+//			System.out.println("Jsonpath="+url);
+
+//			String endpoint = "https://api.thecatapi.com/v1/images/search";
+//			String json = given().when().get(endpoint).asString();
+//			System.out.println(json);
+//			String firstArrayItem = JsonPath.read(json, "$[0]").toString();
+	// fetch complete response
+//			String completeResponse = JsonPath.read(json, "$").toString();
+//			String authors = JsonPath.parse(json).read( "$");
+//			
+//			Object dataObject = JsonPath.parse(json).read("$[?(@.id == 2)]");
+//			String dataString = dataObject.toString();
+//
+//			System.out.println("-----completeResponse---");
+//			System.out.println(completeResponse);
+//		}
+	
+	
+//	@Test
+//	public void postRequest() {
+//		RestAssured.baseURI = "https://api.thecatapi.com";
+//		File file = new File("C:\\Users\\Vaibhav\\eclipse-workspace\\testingfor\\src\\test\\resources\\schema.json");
+//
+//		given().body(file).with().contentType("application/json").then().expect().statusCode(200).when()
+//				.post("/v1/votes");
+//	}
+
+//		@Test
+//		public void vote() {
+//			File file = new File("C:\\Users\\Vaibhav\\eclipse-workspace\\testingfor\\src\\test\\resources\\schema.json");
+//			RestAssured.baseURI = "https://api.thecatapi.com";
+//			RequestSpecification httpRequest = RestAssured.given();
+//			Response response = httpRequest.body(file).post("/v1/votes");
+//
+//			// First get the JsonPath object instance from the Response interface
+//			JsonPath jsonPathEvaluator = response.jsonPath();
+//			int msg=jsonPathEvaluator.get("id");
+//			System.out.println(msg);
+//		}
 }
