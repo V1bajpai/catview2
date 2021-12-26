@@ -212,8 +212,7 @@ public class TestVaibhav {
 		String status = JsonPath.read(json, "$[0].labels[9].Name").toString();
 		Assert.assertEquals("Sleeping", status);
 
-		System.out.println("Tre===");
-		System.out.println("Tre===");
+		System.out.println("Github Mgmt");
 
 
 
